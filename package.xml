@@ -1,0 +1,17 @@
+<package format="2">
+  <description>
+    TODO
+  </description>
+  <author>Matthias Nieuwenhuisen</author>
+  <license>MIT</license>
+  <url>TODO</url>
+  <name>discorde_tsp</name>
+  <version>1.0.0</version>
+  <maintainer email="nieuwenh@ais.uni-bonn.de">Matthias Nieuwenhuisen</maintainer>
+
+  <buildtool_depend>catkin</buildtool_depend>
+
+  <!-- compile time dependencies -->
+  <depend>mod_concorde</depend>
+</package>
+

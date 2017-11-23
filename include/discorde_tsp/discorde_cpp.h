@@ -1,8 +1,8 @@
 #ifndef DISCORDE_CPP_H
 #define DISCORDE_CPP_H
 
+#include <vector>
 #include <cstdlib>
-
 
 /**
  * Define some constants used by Discorde TSP.
@@ -58,8 +58,6 @@ namespace discorde {
      * 
      * @param   n_nodes
      *          Number of nodes.
-     * @param   n_edges
-     *          Number of edges.
      * @param   edges
      *          An unidimensional array of length {@code 2 * n_edges}. It gives 
      *          the edges in pair of nodes like the original API of Concorde, 
@@ -98,138 +96,19 @@ namespace discorde {
      *          Indicates that the solver should stop as soon as the runtime 
      *          reaches {@code time_limit} seconds. It may be {@code NULL} if no 
      *          time limit is desired.
-     * @param   target
-     *          Indicates that the solver should stop as soon as it finds a tour 
-     *          with cost equal or better than {@code target} value. It may be 
-     *          {@code NULL} if no target value is desired.
-     * 
      * @return  {@code DISCORDE_RETURN_OK} if a feasible tour has been found, 
      *          or {@code DISCORDE_RETURN_FAILURE} otherwise.
      */
-    int concorde(int n_nodes, int n_edges, int* edges, int* edges_costs, 
-            int* out_tour, double* out_cost, int* out_status = NULL, 
-            int* in_tour = NULL, bool verbose = false, double* time_limit = NULL, 
-            double* target = NULL);
+    int concorde(int n_nodes, std::vector< int >& edges, std::vector< int >& edges_costs, 
+            std::vector< int >& out_tour, double& out_cost, int* out_status = NULL, 
+            std::vector< int > in_tour = std::vector< int >(), bool verbose = false, double time_limit = 1.);
 
-    /**
-     * This function solves an instance of the traveling salesman problem (TSP) 
-     * using the Concorde solver. Concorde is a branch-and-cut based solver that 
-     * solves a TSP instance to optimality, if no time limit or target is set.
-     * 
-     * @param   n_nodes
-     *          Number of nodes.
-     * @param   n_edges
-     *          Number of edges.
-     * @param   edges
-     *          An array of dimension {@code n_edges} by {@code 2}. It gives the 
-     *          edges in pair of nodes.
-     * @param   edges_costs
-     *          An array of length {@code n_edges} that gives the costs (weights) 
-     *          of each edge, following the same order in {@code edges} array.
-     * @param   out_tour
-     *          An array of length {@code n_nodes} to store the best tour found 
-     *          by the solver.
-     * @param   out_cost
-     *          A pointer to a {@code double} variable to store the cost of the 
-     *          best tour ({@code out_tour}) found by the solver.
-     * @param   out_status
-     *          A pointer to an {@code int} variable which indicates the solver 
-     *          status, i.e, which stop criterion has been activated. It may be 
-     *          set as {@code NULL} if this information is not desired. The 
-     *          values of {@code out_status} at the end of the function may be: 
-     *          {@code DISCORDE_STATUS_OPTIMAL} if a tour has bee found and 
-     *          it is optimal; {@code DISCORDE_STATUS_TIMELIMIT} if the 
-     *          solver has stopped because the time limit has been reached; 
-     *          {@code DISCORDE_STATUS_TARGET} if the solver has stopped 
-     *          because a tour with cost equal or better than the {@code target} 
-     *          value has been found; or {@code DISCORDE_STATUS_UNKNOWN} if 
-     *          the solver has stopped unexpectedly.
-     * @param   in_tour
-     *          An array of length {@code n_nodes} which gives a starting tour 
-     *          in (node, node, ..., node) format. It may be {@code NULL} if no 
-     *          feasible tour is known.
-     * @param   verbose
-     *          If {@code true}, the progress log is printed on the standard 
-     *          output. If {@code false}, the progress log is not printed.
-     * @param   time_limit
-     *          Indicates that the solver should stop as soon as the runtime 
-     *          reaches {@code time_limit} seconds. It may be {@code NULL} if no 
-     *          time limit is desired.
-     * @param   target
-     *          Indicates that the solver should stop as soon as it finds a tour 
-     *          with cost equal or better than {@code target} value. It may be 
-     *          {@code NULL} if no target value is desired.
-     * 
-     * @return  {@code DISCORDE_RETURN_OK} if a feasible tour has been found, 
-     *          or {@code DISCORDE_RETURN_FAILURE} otherwise.
-     */
-    int concorde_sparse(int n_nodes, int n_edges, int** edges, int* edges_costs, 
-            int* out_tour, double* out_cost, int* out_status = NULL, 
-            int* in_tour = NULL, bool verbose = false, double* time_limit = NULL, 
-            double* target = NULL);
-
-    /**
-     * This function solves an instance of the traveling salesman problem (TSP) 
-     * using the Concorde solver. Concorde is a branch-and-cut based solver that 
-     * solves a TSP instance to optimality, if no time limit or target is set.
-     * 
-     * @param   n_nodes
-     *          Number of nodes.
-     * @param   cost_matrix
-     *          A array of dimension {@code n_nodes} by {@code n_nodes}. It is 
-     *          an upper triangular matrix where the element 
-     *          {@code cost_matrix[i][j]}, with i less than j, is the cost 
-     *          (weight) of the edges (i,j) and (j,i).
-     * @param   out_tour
-     *          An array of length {@code n_nodes} to store the best tour found 
-     *          by the solver.
-     * @param   out_cost
-     *          A pointer to a {@code double} variable to store the cost of the 
-     *          best tour ({@code out_tour}) found by the solver.
-     * @param   out_status
-     *          A pointer to an {@code int} variable which indicates the solver 
-     *          status, i.e, which stop criterion has been activated. It may be 
-     *          set as {@code NULL} if this information is not desired. The 
-     *          values of {@code out_status} at the end of the function may be: 
-     *          {@code DISCORDE_STATUS_OPTIMAL} if a tour has bee found and 
-     *          it is optimal; {@code DISCORDE_STATUS_TIMELIMIT} if the 
-     *          solver has stopped because the time limit has been reached; 
-     *          {@code DISCORDE_STATUS_TARGET} if the solver has stopped 
-     *          because a tour with cost equal or better than the {@code target} 
-     *          value has been found; or {@code DISCORDE_STATUS_UNKNOWN} if 
-     *          the solver has stopped unexpectedly.
-     * @param   in_tour
-     *          An array of length {@code n_nodes} which gives a starting tour 
-     *          in (node, node, ..., node) format. It may be {@code NULL} if no 
-     *          feasible tour is known.
-     * @param   verbose
-     *          If {@code true}, the progress log is printed on the standard 
-     *          output. If {@code false}, the progress log is not printed.
-     * @param   time_limit
-     *          Indicates that the solver should stop as soon as the runtime 
-     *          reaches {@code time_limit} seconds. It may be {@code NULL} if no 
-     *          time limit is desired.
-     * @param   target
-     *          Indicates that the solver should stop as soon as it finds a tour 
-     *          with cost equal or better than {@code target} value. It may be 
-     *          {@code NULL} if no target value is desired.
-     * 
-     * @return  {@code DISCORDE_RETURN_OK} if a feasible tour has been found, 
-     *          or {@code DISCORDE_RETURN_FAILURE} otherwise.
-     */
-    int concorde_full(int n_nodes, int** cost_matrix, 
-            int* out_tour, double* out_cost, int* out_status = NULL, 
-            int* in_tour = NULL, bool verbose = false, double* time_limit = NULL, 
-            double* target = NULL);
-    
     /**
      * This function solves an instance of the traveling salesman problem (TSP) 
      * using the Lin-Kernighan heuristic implemented in Concorde library.
      * 
      * @param   n_nodes
      *          Number of nodes.
-     * @param   n_edges
-     *          Number of edges.
      * @param   edges
      *          An unidimensional array of length {@code 2 * n_edges}. It gives 
      *          the edges in pair of nodes like the original API of Concorde, 
@@ -264,93 +143,11 @@ namespace discorde {
      * @return  {@code DISCORDE_RETURN_OK} if a feasible tour has been found, 
      *          or {@code DISCORDE_RETURN_FAILURE} otherwise.
      */
-    int linkernighan(int n_nodes, int n_edges, int* edges, int* edges_costs, 
-            int* out_tour, double* out_cost, int* in_tour = NULL, 
-            bool verbose = false, double* time_limit = NULL, double* target = NULL);
+    int linkernighan(int n_nodes, std::vector< int >& edges, std::vector< int >& edges_costs, 
+            std::vector< int >& out_tour, double& out_cost, std::vector< int > in_tour = std::vector< int >(), 
+            bool verbose = false, double time_limit = -1., double target = -1.);
 
-    /**
-     * This function solves an instance of the traveling salesman problem (TSP) 
-     * using the Lin-Kernighan heuristic implemented in Concorde library.
-     * 
-     * @param   n_nodes
-     *          Number of nodes.
-     * @param   n_edges
-     *          Number of edges.
-     * @param   edges
-     *          An array of dimension {@code n_edges} by {@code 2}. It gives the 
-     *          edges in pair of nodes.
-     * @param   edges_costs
-     *          An array of length {@code n_edges} that gives the costs (weights) 
-     *          of each edge, following the same order in {@code edges} array.
-     * @param   out_tour
-     *          An array of length {@code n_nodes} to store the best tour found 
-     *          by the solver.
-     * @param   out_cost
-     *          A pointer to a {@code double} variable to store the cost of the 
-     *          best tour ({@code out_tour}) found by the solver.
-     * @param   in_tour
-     *          An array of length {@code n_nodes} which gives a starting tour 
-     *          in (node, node, ..., node) format. It may be {@code NULL} if no 
-     *          feasible tour is known.
-     * @param   verbose
-     *          If {@code true}, the progress log is printed on the standard 
-     *          output. If {@code false}, the progress log is not printed.
-     * @param   time_limit
-     *          Indicates that the solver should stop as soon as the runtime 
-     *          reaches {@code time_limit} seconds. It may be {@code NULL} if no 
-     *          time limit is desired.
-     * @param   target
-     *          Indicates that the solver should stop as soon as it finds a tour 
-     *          with cost equal or better than {@code target} value. It may be 
-     *          {@code NULL} if no target value is desired.
-     * 
-     * @return  {@code DISCORDE_RETURN_OK} if a feasible tour has been found, 
-     *          or {@code DISCORDE_RETURN_FAILURE} otherwise.
-     */
-    int linkernighan_sparse(int n_nodes, int n_edges, int** edges, int* edges_costs, 
-            int* out_tour, double* out_cost, int* in_tour = NULL, 
-            bool verbose = false, double* time_limit = NULL, double* target = NULL);
-
-    /**
-     * This function solves an instance of the traveling salesman problem (TSP) 
-     * using the Lin-Kernighan heuristic implemented in Concorde library.
-     * 
-     * @param   n_nodes
-     *          Number of nodes.
-     * @param   cost_matrix
-     *          A array of dimension {@code n_nodes} by {@code n_nodes}. It is 
-     *          an upper triangular matrix where the element 
-     *          {@code cost_matrix[i][j]}, with i less than j, is the cost 
-     *          (weight) of the edges (i,j) and (j,i).
-     * @param   out_tour
-     *          An array of length {@code n_nodes} to store the best tour found 
-     *          by the solver.
-     * @param   out_cost
-     *          A pointer to a {@code double} variable to store the cost of the 
-     *          best tour ({@code out_tour}) found by the solver.
-     * @param   in_tour
-     *          An array of length {@code n_nodes} which gives a starting tour 
-     *          in (node, node, ..., node) format. It may be {@code NULL} if no 
-     *          feasible tour is known.
-     * @param   verbose
-     *          If {@code true}, the progress log is printed on the standard 
-     *          output. If {@code false}, the progress log is not printed.
-     * @param   time_limit
-     *          Indicates that the solver should stop as soon as the runtime 
-     *          reaches {@code time_limit} seconds. It may be {@code NULL} if no 
-     *          time limit is desired.
-     * @param   target
-     *          Indicates that the solver should stop as soon as it finds a tour 
-     *          with cost equal or better than {@code target} value. It may be 
-     *          {@code NULL} if no target value is desired.
-     * 
-     * @return  {@code DISCORDE_RETURN_OK} if a feasible tour has been found, 
-     *          or {@code DISCORDE_RETURN_FAILURE} otherwise.
-     */
-    int linkernighan_full(int n_nodes, int** cost_matrix, 
-            int* out_tour, double* out_cost, int* in_tour = NULL, 
-            bool verbose = false, double* time_limit = NULL, double* target = NULL);
-    
 }
 
 #endif /* DISCORDE_CPP_H */
+
