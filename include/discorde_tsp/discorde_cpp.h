@@ -101,7 +101,7 @@ namespace discorde {
      */
     int concorde(int n_nodes, std::vector< int >& edges, std::vector< int >& edges_costs, 
             std::vector< int >& out_tour, double& out_cost, int* out_status = NULL, 
-            std::vector< int > in_tour = std::vector< int >(), bool verbose = false, double time_limit = 1.);
+            std::vector< int > in_tour = std::vector< int >(), bool verbose = false, double time_limit = -1.);
 
     /**
      * This function solves an instance of the traveling salesman problem (TSP) 

@@ -27,7 +27,7 @@ int discorde::concorde(int n_nodes, std::vector< int >& edges, std::vector< int 
     }
 
     /* Call Concorde solver */
-    int n_edges = static_cast< int >( edges.size() );
+    int n_edges = static_cast< int >(edges.size() / 2);
     CCtsp_solve_sparse(n_nodes, n_edges, edges.data(), edges_costs.data(), in_tour.empty() ? NULL : in_tour.data(),
             out_tour.data(), NULL, &out_cost, &optimal, &success, filename, (time_limit == -1. ) ? NULL : &time_limit,
             &hit_timelimit, !verbose, &rstate);
@@ -77,7 +77,7 @@ int discorde::linkernighan(int n_nodes, std::vector< int >& edges,
 
     /* Initialize the coordinate data */
     CCutil_init_datagroup (&data);
-    int n_edges = static_cast< int >( edges.size() );
+    int n_edges = static_cast< int >(edges.size() / 2);
     CCutil_graph2dat_sparse(n_nodes, n_edges, edges.data(), edges_costs.data(), 0, &data);
 
     /* Call Lin-Kernighan heuristic */
